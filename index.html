@@ -1,0 +1,93 @@
+<html>
+
+<head>
+  <title>PeerJS</title>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <p>
+    Your peer id is: <span id="peer-id"></span>
+  </p>
+  <div id="connect-box">
+    <form id="connect-form">
+      Connect to: <input type="text" />
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  <div id="chat-box" class="hidden">
+    You are connected to: <span id="remote-id"></span>
+    <form id="chat-form">
+      Send message: <input type="text" />
+      <button type="submit">Send</button>
+    </form>
+    <ul id="messages"></ul>
+  </div>
+
+</body>
+<script src="https://www.unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+<script type="text/javascript">
+  const peer = new Peer();
+
+  // append a message to the chat
+  const appendMessage = (peerId, message) => {
+    const messageElement = document.createElement('li');
+    messageElement.innerText = `${new Date().toLocaleTimeString()} - ${peerId}: ${message}`;
+    const messages = document.getElementById('messages');
+    messages.insertBefore(messageElement, messages.firstChild);
+  }
+
+  // connect to a peer
+  const onConnectSubmit = (e) => {
+    e.preventDefault();
+    const remoteId = document.getElementById('connect-form').getElementsByTagName('input')[0].value;
+    const conn = peer.connect(remoteId);
+    onConnection(conn);
+  }
+
+  // send a message
+  const onMessageSubmit = (conn) => (e) => {
+    e.preventDefault();
+    const input = document.getElementById('chat-form').getElementsByTagName('input')[0];
+    const message = input.value;
+    if (message) {
+      conn.send(message);
+      input.value = '';
+      appendMessage(peer.id, message);
+    }
+  }
+
+  // connection event handlers
+  const onConnection = (conn) => {
+    conn.on('error', (err) => {
+      console.error('connection error', { err, conn });
+    });
+
+    conn.on('open', () => {
+      const peerId = document.getElementById('remote-id').innerText = conn.peer;
+      document.getElementById('connect-box').classList.add('hidden')
+      document.getElementById('chat-box').classList.remove('hidden');
+      document.getElementById('chat-form').onsubmit = onMessageSubmit(conn);
+    });
+
+    conn.on("data", (message) => {
+      appendMessage(conn.peer, message)
+    })
+  }
+
+  //
+  // LISTENERS
+  //
+  peer.on("open", (id) => {
+    const peerId = document.getElementById('peer-id').innerText = id;
+    document.getElementById('connect-form').onsubmit = onConnectSubmit;
+  });
+
+  peer.on("connection", onConnection);
+</script>
+
+</html>
