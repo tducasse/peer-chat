@@ -6,3 +6,7 @@ This is a very minimal chat, just to try PeerJS (peer to peer communication usin
 - wait for your Peer ID to appear (generated through the Peer Server Cloud Service)
 - enter a Peer ID to connect to (someone else has to have done the two first steps)
 - send some messages!
+
+# Things that I'm looking forward to try later
+- video chat one on one by streaming the video from one client to the other
+- connect to more than one client
