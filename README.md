@@ -1,6 +1,6 @@
 # peer-chat
 
-![weekend-project](https://the-weekend-project.vercel.app/api/svg)
+[![weekend-project](https://the-weekend-project.vercel.app/api/svg)](https://tducasse.com/posts/the-weekend-project)
 
 This is a very minimal chat, just to try PeerJS (peer to peer communication using webrtc).
 
