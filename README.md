@@ -1,5 +1,7 @@
 # peer-chat
 
+![weekend-project](https://the-weekend-project.vercel.app/api/svg)
+
 This is a very minimal chat, just to try PeerJS (peer to peer communication using webrtc).
 
 - open [chat.tducasse.com](chat.tducasse.com)
